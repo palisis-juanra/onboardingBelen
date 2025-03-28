@@ -1,16 +1,18 @@
             {{>header}}
-            <div class="login">
-                <form action="loginFormController.php" method="POST">
-                    <div class="container">
-                        <div>
-                            <label for="uname"><b>Username                                                                                                              </b></label>
-                            <input type="text" placeholder="Enter Username" name="uname" required>
+            <div class="align-self-center w-100 h-auto p-5 mt-5">
+                <form class="d-flex flex-wrap flex-column justify-content-center" action="src/controller/mainController.php" method="post">
+                    <div class="d-flex flex-column mb-3 justify-content-center align-self-center shadow p-5 rounded-4 bg-white" style="width: 40%">
+                        <div class="d-flex flex-column p-2 justify-content-center text-center form-outline mb-4">
+                            <label class="form-label" for="uname"><b>Username</b></label>                                                                                                           </b></label>
+                            <input class="form-control w-75 align-self-center text-center" type="text" placeholder="Enter Username" name="uname" required>
                         </div>
-                        <div>
-                            <label for="psw"><b>Password</b></label>
-                            <input type="password" placeholder="Enter Password" name="psw" required>
+                        <div class="d-flex flex-column p-2 justify-content-center text-center form-outline mb-4">
+                            <label class="form-label" for="psw"><b>Password</b></label>
+                            <input class="form-control w-75 align-self-center  text-center" type="password" placeholder="Enter Password" name="psw" required>
                         </div>
-                        <button type="submit">Login</button>
+
+                        <button class="w-25 align-self-center p-3 btn btn-light"  type="submit" >Login</button>
+
                     </div>
                 </form> 
             </div>
