@@ -15,7 +15,6 @@ class loginController
     public function login() {
         $redisConnection = new connexionController($this->data);
         $redisConnection->redisUserLogged();
-        $mustacheController=new mustacheController('channels',[],'template');
-        $mustacheController->mustacheRenderer();
+        header('Location: http://www.onboardingbelen.local/');
     }
 }

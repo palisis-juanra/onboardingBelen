@@ -3,6 +3,13 @@ require('/var/www/html/onboardingBelen/vendor/autoload.php');
 use TourCMS\OnBoarding\Controller\loginController;
 use TourCMS\OnBoarding\Controller\mustacheController;
 
+
+if($_SERVER['REQUEST_URI'] =='/error'){
+    $mustacheController=new mustacheController('error',[],'template');
+    $mustacheController->mustacheRenderer();
+    exit;
+}
+
 if(isset($_COOKIE['SESSION'])){
     $mustacheController=new mustacheController('channels',[],'template');
     $mustacheController->mustacheRenderer();
@@ -14,9 +21,6 @@ if(isset($_COOKIE['SESSION'])){
         $login = new loginController([$_POST['uname']=>$_POST['psw']]);
         $login->login();
     
-    }elseif(isset($_GET['error'])){
-        $mustacheController=new mustacheController('error',[],'template');
-        $mustacheController->mustacheRenderer();
     }
 }
 

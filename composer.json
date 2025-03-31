@@ -11,6 +11,7 @@
         "TourCMS\\Services\\": "/var/www/tourcms_core/services/src/",
         "TourCMS\\Core\\": "/var/www/tourcms_core/services/Core/src/",
         "TourCMS\\OnBoarding\\Controller\\":"/var/www/html/onboardingBelen/src/controller/",
+        "TourCMS\\OnBoarding\\Model\\":"/var/www/html/onboardingBelen/src/model/",
         "TourCMS\\OnBoarding\\Config\\":"/var/www/html/onboardingBelen/config/"
         }
     }
