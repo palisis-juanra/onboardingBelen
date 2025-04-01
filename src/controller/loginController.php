@@ -2,8 +2,6 @@
 namespace TourCMS\OnBoarding\Controller;
 
 use TourCMS\OnBoarding\Controller\connexionController;
-use Error;
-
 
 class loginController
 {

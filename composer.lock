@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "502ddefe442be4f0692100b62b43904a",
+    "content-hash": "ce822472531731848072301f7acdd3ef",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -492,6 +492,58 @@
                 }
             ],
             "time": "2024-09-09T11:45:10+00:00"
+        },
+        {
+            "name": "tourcms/tourcms-php",
+            "version": "v4.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TourCMS/tourcms-php.git",
+                "reference": "be0600c836b89aa0c140ac35970213b745dadae5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TourCMS/tourcms-php/zipball/be0600c836b89aa0c140ac35970213b745dadae5",
+                "reference": "be0600c836b89aa0c140ac35970213b745dadae5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-v1.x": "1.9.x-dev",
+                    "dev-master": "3.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TourCMS\\Utils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "TourCMS",
+                    "email": "support@tourcms.com",
+                    "homepage": "http://www.tourcms.com"
+                }
+            ],
+            "description": "TourCMS API wrapper for PHP",
+            "homepage": "https://github.com/TourCMS/tourcms-php",
+            "keywords": [
+                "api",
+                "tourcms"
+            ],
+            "support": {
+                "issues": "https://github.com/TourCMS/tourcms-php/issues",
+                "source": "https://github.com/TourCMS/tourcms-php/tree/v4.9.0"
+            },
+            "time": "2024-09-23T13:58:52+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

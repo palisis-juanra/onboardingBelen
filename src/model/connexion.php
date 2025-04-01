@@ -10,7 +10,7 @@ class connexion
     public $expirationTime;
     public $data;
 
-    public function __construct($data)
+    public function __construct($data = null)
     {
         try {
             $this->redis = new Redis(env::getEnvVariable("REDIS_HOST"), env::getEnvVariable('REDIS_PORT'), env::getEnvVariable('REDIS_PASSWORD'));
@@ -21,5 +21,9 @@ class connexion
             header('Location:http://'.$_SERVER['SERVER_NAME'].'/error');
             exit();
         }
+    }
+
+    public function dataSetter($newData){
+        $this->data = $newData;
     }
 }

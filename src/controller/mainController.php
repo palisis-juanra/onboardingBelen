@@ -2,6 +2,7 @@
 require('/var/www/html/onboardingBelen/vendor/autoload.php');
 use TourCMS\OnBoarding\Controller\loginController;
 use TourCMS\OnBoarding\Controller\mustacheController;
+use TourCMS\OnBoarding\Controller\tourCMSFactoryController;
 
 
 if($_SERVER['REQUEST_URI'] =='/error'){
@@ -11,8 +12,14 @@ if($_SERVER['REQUEST_URI'] =='/error'){
 }
 
 if(isset($_COOKIE['SESSION'])){
-    $mustacheController=new mustacheController('channels',[],'template');
-    $mustacheController->mustacheRenderer();
+    #IN PROGRESS
+    $tourCMSFactory= new tourCMSFactoryController();
+    if(isset($_POST['selectedChannel'])){
+        $tourCMSFactory->getTourCMSData('channels','tours',$_POST['selectedChannel']);
+        exit();
+    }
+    $tourCMSFactory->getTourCMSData('channels','channels',$_POST['selectedChannel']);
+    
 }else{
     $mustacheController=new mustacheController('login',[],'template');
     $mustacheController->mustacheRenderer();
@@ -20,7 +27,6 @@ if(isset($_COOKIE['SESSION'])){
     if(isset($_POST['uname']) && isset($_POST['psw'])){
         $login = new loginController([$_POST['uname']=>$_POST['psw']]);
         $login->login();
-    
     }
 }
 
