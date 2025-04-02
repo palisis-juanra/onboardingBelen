@@ -19,7 +19,6 @@ class tourCMSFactoryController
     public function getTourCMSData($template,$typeOfData,$channel = 0, $params = ''){
         $results=[];
         if($this->redisConnexion->redisDataExists($_COOKIE['SESSION'].$typeOfData.$channel )){
-            echo 'aqui';
             $encodedResults=$this->redisConnexion->redisGetData($_COOKIE['SESSION'].$typeOfData.$channel,'string');
             $results=json_decode($encodedResults,true);
         }else{
@@ -34,10 +33,17 @@ class tourCMSFactoryController
         $results=[];
         match ($typeOfData) {
             'channels' => $results = $this->tourCMS->list_channels($params),
-            'tours' => $results = $this->tourCMS->search_tours($params,$channel),
+            'tours' => $results = $this->channelTours($channel,$params),
             'bookings' => $results = $this->tourCMS->list_bookings($params,$channel),
             'customers' => $results 
         };
+        return $results;
+    }
+
+    public function channelTours($channel = 0, $params = '') {
+        $tours = $this->tourCMS->search_tours($params,$channel);
+        $channels = $this->tourCMS->list_channels($params);
+        $results = ["tours"=>$tours,"channels"=>$channels];
         return $results;
     }
 
