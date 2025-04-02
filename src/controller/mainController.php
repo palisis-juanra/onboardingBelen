@@ -15,19 +15,21 @@ if(isset($_COOKIE['SESSION'])){
     #IN PROGRESS
     $tourCMSFactory= new tourCMSFactoryController();
     if(isset($_POST['selectedChannel'])){
-        $tourCMSFactory->getTourCMSData('channels','tours',$_POST['selectedChannel']);
+        $tourCMSFactory->getTourCMSData('tours','tours',$_POST['selectedChannel']);
         exit();
     }
-    $tourCMSFactory->getTourCMSData('channels','channels',$_POST['selectedChannel']);
+    $tourCMSFactory->getTourCMSData('channels','channels');
     
 }else{
-    $mustacheController=new mustacheController('login',[],'template');
-    $mustacheController->mustacheRenderer();
     
     if(isset($_POST['uname']) && isset($_POST['psw'])){
         $login = new loginController([$_POST['uname']=>$_POST['psw']]);
         $login->login();
     }
+    $mustacheController=new mustacheController('login',[],'template');
+    $mustacheController->mustacheRenderer();
+    
+    
 }
 
 
