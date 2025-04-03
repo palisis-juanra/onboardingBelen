@@ -53,12 +53,18 @@ class connexionController
             $this->connexion->redis->expireAt(session_id(), $this->connexion->expirationTime);
             $cookieExpiration = time() + 86400;
             setcookie("SESSION", session_id(), $cookieExpiration, "/");
-        } elseif (isset($_COOKIE['SESSION']) && !isset($_COOKIE['PHPSESSID'])) {
+        } elseif (isset($_COOKIE['SESSION'])) {
             if ($this->connexion->redis->existKey($_COOKIE['SESSION']) == 0) {
+
                 session_destroy();
+                unset($_COOKIE['SESSION']);
+                setcookie("SESSION", "", time()-3600);
+                if(isset($_COOKIE["PHPSESSID"])) {
+                    setcookie("PHPSESSID", "", time()-3600);
+                }
                 header('Location:http://' . $_SERVER['SERVER_NAME'] . '/error');
                 exit();
-            } else {
+            } if(!isset($_COOKIE['PHPSESSID'])) {
                 session_id($_COOKIE['SESSION']);
                 session_start();
             }

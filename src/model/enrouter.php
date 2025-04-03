@@ -4,15 +4,23 @@ namespace TourCMS\OnBoarding\Model;
 
 class enrouter
 {
-    static function enroute($routes)
+    public $routes;
+    public $serverURI;
+
+    public function __construct(){
+        $this->routes = ['/','login','error','channels','tours','tour'];
+        $this->serverURI =['',''];
+
+    }
+    public function enroute()
     {
-        if(in_array($_SERVER['REQUEST_URI'], $routes,true) == false ){
+        $_SERVER['REQUEST_URI'] == '/' ? $serverURI[1] = $_SERVER['REQUEST_URI'] : $serverURI = explode('/',$_SERVER['REQUEST_URI']);;
+
+        if(in_array($serverURI[1], $this->routes,true) == false ){
             header('Location:http://'.$_SERVER['SERVER_NAME'].'/error') ;
             exit();
         }else{
-            foreach ($routes as $key => $value) {
-                $_SERVER['REQUEST_URI'] == $value ? include_once('src/controller/mainController.php') : '';
-            }
+            include_once('src/controller/mainController.php');
         }
         
     }

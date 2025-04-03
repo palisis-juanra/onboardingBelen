@@ -13,6 +13,6 @@ class loginController
     public function login() {
         $redisConnection = new connexionController($this->data);
         $redisConnection->redisUserLogged();
-        header('Location: http://www.onboardingbelen.local/');
+
     }
 }
