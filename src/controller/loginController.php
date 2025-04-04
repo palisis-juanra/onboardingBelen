@@ -6,11 +6,13 @@ use TourCMS\OnBoarding\Controller\connexionController;
 class loginController
 {
     public $data;
-    public function __construct($data) {
+    public function __construct($data)
+    {
         $this->data = $data;
     }
 
-    public function login() {
+    public function login()
+    {
         $redisConnection = new connexionController($this->data);
         $redisConnection->redisUserLogged();
 

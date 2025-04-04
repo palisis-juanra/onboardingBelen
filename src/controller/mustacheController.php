@@ -12,9 +12,10 @@ class mustacheController
     {
         $this->template = $template;
         $this->context = $context;
-        $this->type = $type;        
+        $this->type = $type;
     }
-    public function mustacheRenderer(){
+    public function mustacheRenderer()
+    {
         Mustache_Autoloader::register();
         $mustache = new Mustache_Engine(array(
             'loader' => new Mustache_Loader_FilesystemLoader('/var/www/html/onboardingBelen/src/view/templates'),
@@ -26,7 +27,7 @@ class mustacheController
         } else {
             $tpl = $mustache->loadPartial($this->template);
         }
-        
+
         echo $tpl->render($this->context);
     }
 }

@@ -18,12 +18,13 @@ class connexion
             $this->expirationTime = strtotime(date("Y-m-d H:i:s", strtotime("+1 day")));
 
         } catch (\Throwable $th) {
-            header('Location:http://'.$_SERVER['SERVER_NAME'].'/error');
+            header('Location:http://' . $_SERVER['SERVER_NAME'] . '/error');
             exit();
         }
     }
 
-    public function dataSetter($newData){
+    public function dataSetter($newData)
+    {
         $this->data = $newData;
     }
 }

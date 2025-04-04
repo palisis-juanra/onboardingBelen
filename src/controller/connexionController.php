@@ -13,12 +13,12 @@ class connexionController
         $this->connexion = new connexion($data);
     }
 
-    function redisDataInsertion($dataType,$data = null)
+    function redisDataInsertion($dataType, $data = null)
     {
-        if(isset($data)){
+        if (isset($data)) {
             $this->connexion->dataSetter($data);
         }
-        
+
         try {
             foreach ($this->connexion->data as $key => $value) {
                 switch ($dataType) {
@@ -55,16 +55,16 @@ class connexionController
             setcookie("SESSION", session_id(), $cookieExpiration, "/");
         } elseif (isset($_COOKIE['SESSION'])) {
             if ($this->connexion->redis->existKey($_COOKIE['SESSION']) == 0) {
-
                 session_destroy();
                 unset($_COOKIE['SESSION']);
-                setcookie("SESSION", "", time()-3600);
-                if(isset($_COOKIE["PHPSESSID"])) {
-                    setcookie("PHPSESSID", "", time()-3600);
+                setcookie("SESSION", "", time() - 3600);
+                if (isset($_COOKIE["PHPSESSID"])) {
+                    setcookie("PHPSESSID", "", time() - 3600);
                 }
-                header('Location:http://' . $_SERVER['SERVER_NAME'] . '/error');
+                header('Location:http://' . $_SERVER['SERVER_NAME'] . '/');
                 exit();
-            } if(!isset($_COOKIE['PHPSESSID'])) {
+            }
+            if (!isset($_COOKIE['PHPSESSID'])) {
                 session_id($_COOKIE['SESSION']);
                 session_start();
             }
@@ -80,8 +80,9 @@ class connexionController
         }
     }
 
-    function redisGetData($data,$type){
-        return $this->connexion->redis->getItemFromRedis($data,$type);
+    function redisGetData($data, $type)
+    {
+        return $this->connexion->redis->getItemFromRedis($data, $type);
     }
 
 }
