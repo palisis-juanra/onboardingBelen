@@ -1,8 +1,10 @@
 <?php
+
+
 require(getenv('VENDOR'));
 use TourCMS\OnBoarding\Controller\loginController;
 use TourCMS\OnBoarding\Controller\mustacheController;
-use TourCMS\OnBoarding\Controller\tourCMSFactoryController;
+use TourCMS\OnBoarding\Helper\tourCMSService;
 use TourCMS\OnBoarding\Config\env;
 
 
@@ -19,7 +21,7 @@ if ($serverURI[1] == 'error') {
 }
 
 if (isset($_COOKIE['SESSION'])) {
-    $tourCMSFactory = new tourCMSFactoryController();
+    $tourCMSService = new tourCMSService();
 
     #IN PROGRESS
     try {
@@ -43,17 +45,17 @@ if (isset($_COOKIE['SESSION'])) {
         $template = '';
         switch ($serverURI[1]) {
             case 'channels':
-                $results = $tourCMSFactory->getTourCMSData('channels', 'channels');
+                $results = $tourCMSService->getTourCMSData('channels', 'channels');
                 $template = 'channels';
                 break;
 
             case 'tours':
-                $results = $tourCMSFactory->getTourCMSData('tours', 'tours', $serverURI[2]);
+                $results = $tourCMSService->getTourCMSData('tours', 'tours', $serverURI[2]);
                 $template = 'tours';
                 break;
 
             case 'tour':
-                $results = $tourCMSFactory->getTourCMSData('tour', 'tour', $serverURI[2], '', $serverURI[3]);
+                $results = $tourCMSService->getTourCMSData('tour', 'tour', $serverURI[2], '', $serverURI[3]);
                 $template = 'tour';
                 break;
 
