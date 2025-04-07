@@ -24,9 +24,9 @@ class loginController
             foreach ($data as $key => $value) {
                 $_SESSION['user'] = $key;
             }
-            $this->redis->redisDataInsertion('string', [session_id() => $_SESSION['user']]);
-            $this->redis->expireAt(session_id(), $this->redis->expirationTime);
-            setcookie("SESSION", session_id(), $this->cookieExpiration, "/");
+            $this->redis->redisDataInsertion('string', [$_SESSION['user'] => session_id()]);
+            $this->redis->expireAt($_SESSION['user'], $this->redis->expirationTime);
+            setcookie("SESSION", $_SESSION['user'], $this->cookieExpiration, "/");
         } elseif (isset($_COOKIE['SESSION'])) {
             if ($this->redis->existKey($_COOKIE['SESSION']) == 0) {
                 session_destroy();
@@ -38,7 +38,10 @@ class loginController
                 return false;
             }
             if (!isset($_COOKIE['PHPSESSID'])) {
-                session_id($_COOKIE['SESSION']);
+                $session = $this->redis->getItemFromRedis($_COOKIE['SESSION'],'string');
+                foreach ($session as $key => $value) {
+                    session_id($value);
+                }
                 session_start();
             }
             return true;

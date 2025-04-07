@@ -24,27 +24,27 @@ class tourCMSService extends TourCMS
     }
 
     #IN PROGRESS
-    public function getTourCMSData($template, $typeOfData, $channel = 0, $params = '', $tour = 0)
+    public function getTourCMSData($typeOfData, $channel = 0, $params = '', $tour = 0)
     {
         $results = [];
-        if ($this->redis->existKey($_COOKIE['SESSION'] . $typeOfData . $channel . $tour)) {
+        if ($this->redis->existKey($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour)) {
             switch ($typeOfData) {
                 case 'tours':
-                    $encodedTours = $this->redis->getItemFromRedis($_COOKIE['SESSION'] . $typeOfData . $channel . $tour, 'string');
-                    $encodedChannels = $this->redis->getItemFromRedis($_COOKIE['SESSION'].'channels00', 'string');
+                    $encodedTours = $this->redis->getItemFromRedis($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour, 'string');
+                    $encodedChannels = $this->redis->getItemFromRedis($_COOKIE['PHPSESSID'].'channels00', 'string');
                     $results = ['tours'=>json_decode($encodedTours, true),'channels'=>json_decode($encodedChannels)];
                     break;
                 
                 default:
-                    $encodedResults = $this->redis->getItemFromRedis($_COOKIE['SESSION'] . $typeOfData . $channel . $tour, 'string');
+                    $encodedResults = $this->redis->getItemFromRedis($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour, 'string');
                     $results = json_decode($encodedResults, true);
                     break;
             }
         } else {
             $results = $this->callTourCMSFunction($typeOfData, $channel, $params, $tour);
             match ($typeOfData) {
-                'tours' => $this->redis->redisDataInsertion('json', array($_COOKIE['SESSION'] . $typeOfData . $channel . $tour => $results["tours"])),
-                default => $this->redis->redisDataInsertion('json', array($_COOKIE['SESSION'] . $typeOfData . $channel . $tour => $results)),
+                'tours' => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results["tours"])),
+                default => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results)),
             };
         }
         if (isset($results->error) && $results->error == 'NO MATCHING DATA') {
@@ -70,12 +70,12 @@ class tourCMSService extends TourCMS
     {
         $tours = $this->search_tours($params, $channel);
         $channels = null;
-        if ($this->redis->existKey($_COOKIE['SESSION'].'channels00')) {
-            $encodedResults = $this->redis->getItemFromRedis($_COOKIE['SESSION'].'channels00', 'string');
+        if ($this->redis->existKey($_COOKIE['PHPSESSID'].'channels00')) {
+            $encodedResults = $this->redis->getItemFromRedis($_COOKIE['PHPSESSID'].'channels00', 'string');
             $channels = json_decode($encodedResults, true);
         } else {
             $channels = $this->callTourCMSFunction('channels');
-            $this->redis->redisDataInsertion('json', array($_COOKIE['SESSION'].'channels00'=> $channels));
+            $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'].'channels00'=> $channels));
         }
         $results = ["tours" => $tours, "channels" => $channels];
         return $results;

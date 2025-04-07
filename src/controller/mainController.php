@@ -45,17 +45,17 @@ if (isset($_COOKIE['SESSION'])) {
         $template = '';
         switch ($serverURI[1]) {
             case 'channels':
-                $results = $tourCMSService->getTourCMSData('channels', 'channels');
+                $results = $tourCMSService->getTourCMSData( 'channels');
                 $template = 'channels';
                 break;
 
             case 'tours':
-                $results = $tourCMSService->getTourCMSData('tours', 'tours', $serverURI[2]);
+                $results = $tourCMSService->getTourCMSData( 'tours', $serverURI[2]);
                 $template = 'tours';
                 break;
 
             case 'tour':
-                $results = $tourCMSService->getTourCMSData('tour', 'tour', $serverURI[2], '', $serverURI[3]);
+                $results = $tourCMSService->getTourCMSData( 'tour', $serverURI[2], '', $serverURI[3]);
                 $template = 'tour';
                 break;
 
