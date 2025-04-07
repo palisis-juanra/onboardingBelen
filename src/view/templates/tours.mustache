@@ -13,21 +13,27 @@
             <div class="justify-content-center d-flex flex-wrap flex-row w-100 mt-5 mb-5">
             {{#tours.tour}}
             <form action="http://www.onboardingbelen.local/tour/" name='tourForm{{tour_id}}' method="post" style="margin-left: 1.5%; margin-right:1.5%;">
-                    <div class="align-self-center mt-5 card " style="width: 18rem; height: 22rem;">
-                        <img class="card-img-top " src='{{thumbnail_image}}' alt="Card image cap">
-                        <input type="hidden" value="{{tour_id}}" name="selectedTour" />
-                        <input type="hidden" value="{{channel_id}}" name="selectedTourChannel" />
+                    <div class="align-self-center mt-5 card " style="width: 20rem; height: 25rem;">
+                        <img class="card-img-top " src='{{thumbnail_image}}' style="width: 100%; min-height: 45%;" alt="Card image cap">
+                            <input type="hidden" value="{{tour_id}}" name="selectedTour" />
+                            <input type="hidden" value="{{channel_id}}" name="selectedTourChannel" />
                         <div class="card-body">
-                            <h5 class="card-title">{{tour_name}}</h5>
-                            <h5>
-                                {{#has_sale}}
-                                    <button class="btn btn-success rounded-circle p-1"></button> Available{{has_sale}}
-                                {{/has_sale}}
-                                {{^has_sale}}
-                                    <button class="btn btn-danger rounded-circle p-1"></button> Not available{{has_sale}}
-                                {{/has_sale}}
-                            </h5>
-                            <a onClick="tourForm{{tour_id}}.submit()" class="btn btn-primary p-1">Show tour</a>
+                            <div class="justify-content-start d-flex flex-wrap flex-row" style="min-height: 45%;overflow:scroll;">
+                                <h5 class="card-title">{{tour_name}}</h5>
+                            </div>
+                            <div class="justify-content-start d-flex flex-wrap flex-row" style="padding: 1%;min-height: 25%; ">
+                                <h5>
+                                    {{#has_sale}}
+                                        <button class="btn btn-success rounded-circle p-1"></button> Available
+                                    {{/has_sale}}
+                                    {{^has_sale}}
+                                        <button class="btn btn-danger rounded-circle p-1"></button> Not available
+                                    {{/has_sale}}
+                                </h5>
+                             </div>
+                            <div class="align-items-bottom d-flex flex-wrap flex-row" style="min-height: 2em; align-items: end">
+                                <a onClick="tourForm{{tour_id}}.submit()" class="btn btn-primary p-1">Show tour</a>
+                            </div>
                         </div>
                     </div>
              </form>
