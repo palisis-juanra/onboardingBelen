@@ -1,52 +1,52 @@
 <?php
 namespace TourCMS\OnBoarding\Controller;
 
+use PhpParser\Error;
 use TourCMS\OnBoarding\Model\tourCMSFactory;
 use TourCMS\OnBoarding\Controller\mustacheController;
-use TourCMS\OnBoarding\Controller\connexionController;
+use TourCMS\OnBoarding\Helper\redisWrapper;
 
 class tourCMSFactoryController
 {
     public $tourCMS;
-    public $redisConnexion;
+    public $redis;
 
     public function __construct()
     {
         $this->tourCMS = new tourCMSFactory();
-        $this->redisConnexion = new connexionController();
+        $this->redis = new redisWrapper();
     }
 
     #IN PROGRESS
     public function getTourCMSData($template, $typeOfData, $channel = 0, $params = '', $tour = 0)
     {
         $results = [];
-        if ($this->redisConnexion->redisDataExists($_COOKIE['SESSION'] . $typeOfData . $channel . $tour)) {
+        if ($this->redis->existKey($_COOKIE['SESSION'] . $typeOfData . $channel . $tour)) {
             switch ($typeOfData) {
                 case 'tours':
-                    $encodedTours = $this->redisConnexion->redisGetData($_COOKIE['SESSION'] . $typeOfData . $channel . $tour, 'string');
-                    $encodedChannels = $this->redisConnexion->redisGetData($_COOKIE['SESSION'].'channels00', 'string');
-                    $results = ['tours'=>json_decode($encodedTours, true),'channels'=>json_decode($encodedChannels)];
+                    $encodedTours = $this->redis->getItemFromRedis($_COOKIE['SESSION'] . $typeOfData . $channel . $tour, 'string');
+                    $encodedChannels = $this->redis->getItemFromRedis($_COOKIE['SESSION'] . 'channels00', 'string');
+                    $results = ['tours' => json_decode($encodedTours, true), 'channels' => json_decode($encodedChannels)];
                     break;
-                
+
                 default:
-                    $encodedResults = $this->redisConnexion->redisGetData($_COOKIE['SESSION'] . $typeOfData . $channel . $tour, 'string');
+                    $encodedResults = $this->redis->getItemFromRedis($_COOKIE['SESSION'] . $typeOfData . $channel . $tour, 'string');
                     $results = json_decode($encodedResults, true);
                     break;
             }
         } else {
             $results = $this->callTourCMSFunction($typeOfData, $channel, $params, $tour);
             match ($typeOfData) {
-                
-                'tours' => $this->redisConnexion->redisDataInsertion('json', array($_COOKIE['SESSION'] . $typeOfData . $channel . $tour => $results["tours"])),
-                default => $this->redisConnexion->redisDataInsertion('json', array($_COOKIE['SESSION'] . $typeOfData . $channel . $tour => $results)),
+
+                'tours' => $this->redis->redisDataInsertion('json', array($_COOKIE['SESSION'] . $typeOfData . $channel . $tour => $results["tours"])),
+                default => $this->redis->redisDataInsertion('json', array($_COOKIE['SESSION'] . $typeOfData . $channel . $tour => $results)),
             };
         }
         if (isset($results->error) && $results->error == 'NO MATCHING DATA') {
-            header('Location: http://' . $_SERVER['SERVER_NAME'] . '/error');
-            exit();
+            throw new Error('No matching data');
         }
-        $mustacheController = new mustacheController($template, $results, 'template');
-        $mustacheController->mustacheRenderer();
+
+        return $results;
     }
 
     public function callTourCMSFunction($typeOfData, $channel = 0, $params = '', $tour = 0)
@@ -66,12 +66,12 @@ class tourCMSFactoryController
     {
         $tours = $this->tourCMS->search_tours($params, $channel);
         $channels = null;
-        if ($this->redisConnexion->redisDataExists($_COOKIE['SESSION'].'channels00')) {
-            $encodedResults = $this->redisConnexion->redisGetData($_COOKIE['SESSION'].'channels00', 'string');
+        if ($this->redis->existKey($_COOKIE['SESSION'] . 'channels00')) {
+            $encodedResults = $this->redis->getItemFromRedis($_COOKIE['SESSION'] . 'channels00', 'string');
             $channels = json_decode($encodedResults, true);
         } else {
             $channels = $this->callTourCMSFunction('channels');
-            $this->redisConnexion->redisDataInsertion('json', array($_COOKIE['SESSION'].'channels00'=> $channels));
+            $this->redis->redisDataInsertion('json', array($_COOKIE['SESSION'] . 'channels00' => $channels));
         }
         $results = ["tours" => $tours, "channels" => $channels];
         return $results;
