@@ -19,10 +19,24 @@
                         <input type="hidden" value="{{channel_id}}" name="selectedTourChannel" />
                         <div class="card-body">
                             <h5 class="card-title">{{tour_name}}</h5>
+                            <h5>
+                                {{#has_sale}}
+                                    <button class="btn btn-success rounded-circle p-1"></button> Available{{has_sale}}
+                                {{/has_sale}}
+                                {{^has_sale}}
+                                    <button class="btn btn-danger rounded-circle p-1"></button> Not available{{has_sale}}
+                                {{/has_sale}}
+                            </h5>
                             <a onClick="tourForm{{tour_id}}.submit()" class="btn btn-primary p-1">Show tour</a>
                         </div>
                     </div>
              </form>
+            {{/tours.tour}}
+            {{^tours.tour}}
+                <div class='justify-content-center d-flex flex-wrap flex-column w-100 '>
+                    <h1 class='text-muted align-self-center'>No tours available to show right now for the selected channel</h1>
+                    <img class='align-self-center w-fit' src='../../public/images/notours.png' alt="Card image cap">
+                </div>
             {{/tours.tour}}
             </div>
             </div>

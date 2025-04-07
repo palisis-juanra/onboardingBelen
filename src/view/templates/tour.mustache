@@ -4,18 +4,34 @@
                 <div class="container mt-5">
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <img src="{{#images.image.url}}{{images.image.url}}{{/images.image.url}}{{^images.image.url}}{{images.0.image.url}}{{/images.image.url}}" alt="{{images.image.image_desc}}" class="img-fluid rounded mb-3 product-image" id="mainImage">
+                            <img src="{{#images.image.url}}{{images.image.url}}{{/images.image.url}}{{^images.image.url}}{{images.image.0.url}}{{/images.image.url}}" alt="{{images.image.image_desc}}" class="img-fluid rounded mb-3 product-image" id="mainImage">
                         </div>
                         <div class="col-md-6">
                             <h2 class="mb-3">{{tour_name}}</h2>
                             <div class="overflow-scroll">
+                                <h4 class="mb-4">
+                                    {{#has_sale}}
+                                        <button class="btn btn-success rounded-circle p-1"></button> Available
+                                    {{/has_sale}}
+                                    {{^has_sale}}
+                                        <button class="btn btn-danger rounded-circle"></button> Not available
+                                    {{/has_sale}}
+                                </h4>
                                 <p class="text-muted mb-4">From: {{from_price}} {{sale_currency}}</p>
                                 <p class="mb-4">{{shortdesc}}</p>
                                 <p class="mb-4">{{rest}}</p>
+                                <p class="mb-4">
+                                    {{#suitable_for_children}}&#128118 Suitable for children!{{suitable_for_children}}
+                                    {{/suitable_for_children}}
+                                    {{^suitable_for_children}}&#128683 Not suitable for children{{suitable_for_children}}
+                                    {{/suitable_for_children}}
+                                </p>
                             </div>
-                            <button class="w-25 align-self-center p-3 btn btn-primary"  type="submit" >
-                                <i class="bi bi-heart"></i> Book
-                            </button>
+                            {{#has_sale}}
+                                <button class="w-25 align-self-center p-3 btn btn-primary"  type="submit" >
+                                    <i class="bi bi-heart"></i> Book
+                                </button>
+                            {{/has_sale}}
                         </div>
                     </div>
                 </div>
