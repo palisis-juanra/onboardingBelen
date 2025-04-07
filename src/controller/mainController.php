@@ -1,13 +1,15 @@
 <?php
 
 use TourCMS\OnBoarding\Controller\connexionController;
-require('/var/www/html/onboardingBelen/vendor/autoload.php');
+require(__DIR__.'/vendor/autoload.php');
 use TourCMS\OnBoarding\Controller\loginController;
 use TourCMS\OnBoarding\Controller\mustacheController;
 use TourCMS\OnBoarding\Controller\tourCMSFactoryController;
+use TourCMS\OnBoarding\Config\env;
 
 
 $serverURI = [];
+$serverName = env::getEnvVariable('SERVER_NAME');
 
 $_SERVER['REQUEST_URI'] == '/' ? $serverURI[1] = $_SERVER['REQUEST_URI'] : $serverURI = explode('/', $_SERVER['REQUEST_URI']);
 ;
@@ -27,10 +29,10 @@ if (isset($_COOKIE['SESSION'])) {
     $tourCMSFactory = new tourCMSFactoryController();
 
     if (isset($_POST['selectedChannel'])) {
-        header('Location: http://' . $_SERVER['SERVER_NAME'] . '/tours/' . $_POST['selectedChannel']);
+        header('Location: '.$serverName.'/tours/' . $_POST['selectedChannel']);
     }
     if (isset($_POST['selectedTour'])) {
-        header('Location: http://' . $_SERVER['SERVER_NAME'] . '/tour/' . $_POST['selectedTourChannel'] . '/' . $_POST['selectedTour']);
+        header('Location: '.$serverName. '/tour/' . $_POST['selectedTourChannel'] . '/' . $_POST['selectedTour']);
     }
     switch ($serverURI[1]) {
         case 'channels':
@@ -47,14 +49,14 @@ if (isset($_COOKIE['SESSION'])) {
 
         case '/':
             $tourCMSFactory->getTourCMSData('channels', 'channels');
-            header('Location: http://' . $_SERVER['SERVER_NAME'] . '/channels');
+            header('Location: '.$serverName.'/channels');
             break;
     }
 
 
 } else {
     if ($serverURI[1] != '/') {
-        header('Location: http://' . $_SERVER['SERVER_NAME']);
+        header('Location: '.$serverName);
     }
     $mustacheController = new mustacheController('login', [], 'template');
     $mustacheController->mustacheRenderer();

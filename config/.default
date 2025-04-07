@@ -7,3 +7,6 @@ CHANNEL_ID="channel_id"
 REDIS_HOST="redis_host"
 REDIS_PASSWORD="redis_password"
 REDIS_PORT=redis_port
+
+#Base server name
+SERVER_NAME="http://your.server.name"
