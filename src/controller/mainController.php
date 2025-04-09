@@ -3,7 +3,7 @@
 
 require(getenv('VENDOR'));
 use TourCMS\OnBoarding\Controller\loginController;
-use TourCMS\OnBoarding\Controller\mustacheController;
+use TourCMS\OnBoarding\Helper\mustacheService;
 use TourCMS\OnBoarding\Helper\tourCMSService;
 use TourCMS\OnBoarding\Config\env;
 
@@ -15,15 +15,16 @@ $_SERVER['REQUEST_URI'] == '/' ? $serverURI[1] = $_SERVER['REQUEST_URI'] : $serv
 
 
 if ($serverURI[1] == 'error') {
-    $mustacheController = new mustacheController('error', [], 'template');
-    $mustacheController->mustacheRenderer();
+    $mustacheService = new mustacheService('error', [], 'template');
+    $mustacheService->mustacheRenderer();
     exit;
 }
 
 if (isset($_COOKIE['SESSION'])) {
-    $tourCMSService = new tourCMSService();
+    $tourCMSServiceOperator = new tourCMSService('o');
+    $tourCMSServiceAgent = new tourCMSService('a');
 
-    #IN PROGRESS
+    #IN PROGRESS (The post variables are going to be in a match)
     try {
         $userLogged = new loginController();
         if ($userLogged->userLogged() == false) {
@@ -40,23 +41,39 @@ if (isset($_COOKIE['SESSION'])) {
     if (isset($_POST['selectedTour'])) {
         header('Location: ' . $serverName . '/tour/' . $_POST['selectedTourChannel'] . '/' . $_POST['selectedTour']);
     }
+    if (isset($_POST['selectedBookingTour'])) {
+        header('Location: ' . $serverName . '/booking/' . $_POST['selectedBookingTourChannel'] . '/' . $_POST['selectedBookingTour']);
+    }
+    if (isset($_POST['checkAvailability'])) {
+        header('Location: ' . $serverName . '/availability/' . $_POST['checkAvailability']);
+    }
     try {
         $results = [];
         $template = '';
         switch ($serverURI[1]) {
             case 'channels':
-                $results = $tourCMSService->getTourCMSData( 'channels');
+                $results = $tourCMSServiceAgent->getTourCMSData( 'channels');
                 $template = 'channels';
                 break;
 
             case 'tours':
-                $results = $tourCMSService->getTourCMSData( 'tours', $serverURI[2]);
+                $results = $tourCMSServiceAgent->getTourCMSData( 'tours', $serverURI[2]);
                 $template = 'tours';
                 break;
 
             case 'tour':
-                $results = $tourCMSService->getTourCMSData( 'tour', $serverURI[2], '', $serverURI[3]);
+                $results = $tourCMSServiceAgent->getTourCMSData( 'tour', $serverURI[2], '', $serverURI[3]);
                 $template = 'tour';
+                break;
+
+            case 'booking':
+                $results = $tourCMSServiceAgent->getTourCMSData( 'booking', $serverURI[2], '', $serverURI[3]);
+                $template = 'booking';
+                break;
+            
+            case 'availability':
+                $results = $tourCMSServiceAgent->getTourCMSData( 'availability', $serverURI[2], [$_POST], $serverURI[3]);
+                $template = 'booking';
                 break;
 
             case '/':
@@ -64,8 +81,8 @@ if (isset($_COOKIE['SESSION'])) {
                 exit();
 
         }
-        $mustacheController = new mustacheController($template, $results, 'template');
-        $mustacheController->mustacheRenderer();
+        $mustacheService = new mustacheService($template, $results, 'template');
+        $mustacheService->mustacheRenderer();
 
     } catch (\Throwable $th) {
         header('Location: ' . $serverName . '/error');
@@ -75,17 +92,21 @@ if (isset($_COOKIE['SESSION'])) {
 
 
 } else {
-    if ($serverURI[1] != '/') {
-        header('Location: ' . $serverName);
-    }
-    $mustacheController = new mustacheController('login', [], 'template');
-    $mustacheController->mustacheRenderer();
+    $mustacheService = new mustacheService('login', [], 'template');
+    $mustacheService->mustacheRenderer();
     if (isset($_POST['uname']) && isset($_POST['psw'])) {
         try {
             $login = new loginController();
             $login->userLogged([$_POST['uname'] => $_POST['psw']]);
+            header('Location: ' . $serverName . '/channels');
+            exit();
         } catch (\Throwable $th) {
             header('Location: ' . $serverName . '/error');
+            exit();
+        }
+    } else{
+        if ($serverURI[1] != '/') {
+            header('Location: ' . $serverName);
             exit();
         }
     }

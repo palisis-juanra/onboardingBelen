@@ -8,13 +8,15 @@ class loginController
     public $redis;
     private $cookieExpiration;
     private $unsetCookieExpiration;
+
+    # This value sets and unsets the session cookie life time (86400 = 1 day in seconds)
+    private const COOKIE_LIFE_TIME = 86400;
+
     public function __construct()
     {
-        $cookieSumValue = 86400;
-        $unsetValue = 3600;
         $this->redis = new redisWrapper();
-        $this->cookieExpiration = time() + $cookieSumValue;
-        $this->unsetCookieExpiration = time() - $unsetValue;
+        $this->cookieExpiration = time() + self::COOKIE_LIFE_TIME;
+        $this->unsetCookieExpiration = time() - self::COOKIE_LIFE_TIME;
     }
 
     function userLogged($data = null)

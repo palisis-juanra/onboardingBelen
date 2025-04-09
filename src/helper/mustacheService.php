@@ -1,10 +1,10 @@
 <?php
-namespace TourCMS\OnBoarding\Controller;
+namespace TourCMS\OnBoarding\Helper;
 use Mustache_Engine;
 use Mustache_Autoloader;
 use Mustache_Loader_FilesystemLoader;
 use TourCMS\OnBoarding\Config\env;
-class mustacheController
+class mustacheService
 {
     public $template;
     public $context;

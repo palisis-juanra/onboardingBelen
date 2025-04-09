@@ -3,7 +3,7 @@ putenv("VENDOR=/var/www/html/onboardingBelen/vendor/autoload.php");
 require(getenv('VENDOR'));
 
 use TourCMS\OnBoarding\Config\env;
-$routes = ['/', 'login', 'error', 'channels', 'tours', 'tour'];
+$routes = ['/', 'login', 'error', 'channels', 'tours', 'tour','booking','availability'];
 $serverURI = ['', ''];
 $serverName = env::getEnvVariable('SERVER_BASE_NAME_PATH');
 

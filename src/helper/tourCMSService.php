@@ -13,12 +13,14 @@ class tourCMSService extends TourCMS
 
     protected $redis;
     public $channel_id;
+    protected $base_url;
 
-    public function __construct()
+    public function __construct($type)
     {
         $api_key = env::getEnvVariable("API_KEY");
-        $marketplace_id = env::getEnvVariable("MARKETPLACE_ID");
+        $type == 'o' ? $marketplace_id = env::getEnvVariable("MARKETPLACE_ID_OPERATOR") : $marketplace_id = env::getEnvVariable("MARKETPLACE_ID_AGENT");
         parent::__construct($marketplace_id, $api_key, 'simplexml', 0);
+        $this->base_url = 'http://api.tourcms.local';
         $this->redis = new redisWrapper();
         $this->channel_id = env::getEnvVariable("CHANNEL_ID");
     }
@@ -44,6 +46,7 @@ class tourCMSService extends TourCMS
             $results = $this->callTourCMSFunction($typeOfData, $channel, $params, $tour);
             match ($typeOfData) {
                 'tours' => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results["tours"])),
+                'booking' => '',
                 default => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results)),
             };
         }
@@ -59,8 +62,9 @@ class tourCMSService extends TourCMS
         match ($typeOfData) {
             'channels' => $results = $this->list_channels($params),
             'tours' => $results = $this->channelTours($channel, $params),
-            'bookings' => $results = $this->list_bookings($params, $channel),
+            'booking' => $results = $this->getTourCMSData('tour', $channel , $params = '', $tour ),
             'tour' => $results = $this->show_tour($tour, $channel),
+            'availability' => $results = $this->check_availability($params, $tour, $channel ),
             'customers' => $results
         };
         return $results;
@@ -68,7 +72,7 @@ class tourCMSService extends TourCMS
 
     public function channelTours($channel = 0, $params = '')
     {
-        $tours = $this->search_tours($params, $channel);
+        $tours = $this->list_tours($channel);
         $channels = null;
         if ($this->redis->existKey($_COOKIE['PHPSESSID'].'channels00')) {
             $encodedResults = $this->redis->getItemFromRedis($_COOKIE['PHPSESSID'].'channels00', 'string');
@@ -78,6 +82,19 @@ class tourCMSService extends TourCMS
             $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'].'channels00'=> $channels));
         }
         $results = ["tours" => $tours, "channels" => $channels];
+        return $results;
+    }
+
+    public function check_availability($params, $tour, $channel){
+        $qs = '';
+        foreach ($params as $param) {
+            $qs .= $param;
+            if($params[sizeof($params)-1]!=$param){
+                $qs .= '&';
+            }
+        }
+
+        $results = $this->check_tour_availability($qs,$tour,$channel);
         return $results;
     }
 }

@@ -1,24 +1,25 @@
     {{>header}}
         {{#tour}}
-            <div class="align-self-center w-80 h-auto p-5 mt-4  bg-light rounded-3 shadow-lg">
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <img src="{{#images.image.url}}{{images.image.url}}{{/images.image.url}}{{^images.image.url}}{{images.image.0.url}}{{/images.image.url}}" alt="{{images.image.image_desc}}" class="img-fluid rounded mb-3 product-image" id="mainImage">
-                        </div>
-                        <div class="col-md-6">
-                            <h2 class="mb-3">{{tour_name}}</h2>
-                            <div class="overflow-scroll">
-                                <p class="text-muted mb-4">From: {{from_price}} {{sale_currency}}</p>
-                                <p class="mb-4">{{shortdesc}}</p>
-                                <p class="mb-4">{{rest}}</p>
-                            </div>
-                            <button class="w-25 align-self-center p-3 btn btn-primary"  type="submit" >
-                                <i class="bi bi-heart"></i> Book
-                            </button>
-                        </div>
-                    </div>
+            <div class="container d-flex flex-column justify-content-center align-self-center w-50 h-auto p-5 mt-4  bg-light rounded-3 shadow-lg">
+                <h2 class="mb-3 text-center">{{tour_name}} Availability</h2>
+                <div class="mt-5">
+                <form action="http://www.onboardingbelen.local/checkavailability/" name='availabilityForm' method="get">
+                    <input type="hidden" name="checkAvailability" value="{{tour_id}}">
+                    {{#new_booking.people_selection.rate}}
+                        <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
+                            {{label_1}} (from {{{from_price_display}}}) :
+                        </h5>
+                        <input required placeholder="Select your tickets (max {{maximum}})" class="form-control text-center" type="number" name="{{rate_id}}" min="{{minimum}}" max="{{maximum}}"><br>
+                    {{/new_booking.people_selection.rate}}
+                    <h6 class="form-check-label text-muted" for="{{agecat}}">
+                        • Note: Bookings from {{new_booking.date_selection.duration_minimum}} to {{new_booking.date_selection.duration_maximum}} days.
+                    </h6>
+                    <input class="align-self-center form-control text-center" type="date" name="date" min="{{next_bookable_date}}" max="{{last_bookable_date}}">
+                </form>
                 </div>
+                <button onClick="availabilityForm.submit()" class="w-25 align-self-center p-3 btn btn-primary"  type="submit" >
+                    <i class="bi bi-heart"></i> Check availability
+                </button>
             </div>
         {{/tour}}
     {{>footer}}

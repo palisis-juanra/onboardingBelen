@@ -21,16 +21,22 @@
                                 <p class="mb-4">{{shortdesc}}</p>
                                 <p class="mb-4">{{rest}}</p>
                                 <p class="mb-4">
-                                    {{#suitable_for_children}}&#128118 Suitable for children!{{suitable_for_children}}
+                                    {{#suitable_for_children}}
+                                        &#128118 Suitable for children!
                                     {{/suitable_for_children}}
-                                    {{^suitable_for_children}}&#128683 Not suitable for children{{suitable_for_children}}
+                                    {{^suitable_for_children}}
+                                        &#128683 Not suitable for children
                                     {{/suitable_for_children}}
                                 </p>
                             </div>
                             {{#has_sale}}
-                                <button class="w-25 align-self-center p-3 btn btn-primary"  type="submit" >
+                            <form action="http://www.onboardingbelen.local/booking/" name='bookingForm{{tour_id}}' method="post">
+                            <input type="hidden" value="{{tour_id}}" name="selectedBookingTour" />
+                            <input type="hidden" value="{{channel_id}}" name="selectedBookingTourChannel" />
+                                <button class="w-25 align-self-center p-3 btn btn-primary" onClick="bookingForm{{tour_id}}.submit()" type="submit" >
                                     <i class="bi bi-heart"></i> Book
                                 </button>
+                            </form>
                             {{/has_sale}}
                         </div>
                     </div>
