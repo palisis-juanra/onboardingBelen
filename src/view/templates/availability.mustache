@@ -1,17 +1,24 @@
  {{>header}}
-    <div class="container d-flex flex-column justify-content-center align-self-center w-50 h-auto p-5 mt-4  bg-light rounded-3 shadow-lg">
-        <h2 class="mb-3 text-center">{{tour_name}} Booking</h2>
+    <div class="container d-flex flex-row flex-wrap align-self-center justify-content-around w-75 h-auto p-5 mt-4  bg-light rounded-3 shadow-lg">
+        <h2 class="mb-3 text-center">We have found the following available departures for {{tour_name}} </h2>
         {{#available_components.component}}
-        <div class="mt-5">
+        <div class="w-25 p-3 d-flex flex-column align-items-center mt-5" style="background-color:PowderBlue; border-bottom: 4px dashed white; border-radius: 3% 3% 0 0">
         <form action="http://www.onboardingbelen.local/checkavailability/" name='availabilityForm' method="post">
-                <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
-                    From {{start_date}} to {{end_date}}) : 
+                <h5>
+                    Starts: {{start_date}} at {{start_time}} 
                 </h5>
+                <h5>Ends: {{end_date}} at {{end_time}}</h5>
+                <h5>Prices breakdown:</h5>
+                {{#price_breakdown.price_row}}
+                    <h6>{{{.}}}</h6>
+                {{/price_breakdown.price_row}}
+                <h6>Total: {{{total_price_display}}}</h6>
         </form>
-        </div>
-        <button onClick="availabilityForm.submit()" class="w-25 align-self-center p-3 btn btn-primary"  type="submit" >
-            <i class="bi bi-heart"></i> Check availability
+        <button onClick="availabilityForm.submit()" class="w-50 align-self-center p-3 btn btn-primary"  type="submit" >
+            <i class="bi bi-heart"></i> Book
         </button>
+        </div>
+        
         {{/available_components.component}}
         {{^available_components.component}}
             <h2 class="mb-3 text-center">Sorry we don't have availability for the current date</h2>
