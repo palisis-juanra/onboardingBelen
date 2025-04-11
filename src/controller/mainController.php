@@ -34,7 +34,6 @@ if (isset($_COOKIE['SESSION'])) {
         header('Location: ' . $serverName . '/error');
         exit();
     }
-
     if (isset($_POST['selectedChannel'])) {
         header('Location: ' . $serverName . '/tours/' . $_POST['selectedChannel']);
     }
@@ -43,9 +42,6 @@ if (isset($_COOKIE['SESSION'])) {
     }
     if (isset($_POST['selectedBookingTour'])) {
         header('Location: ' . $serverName . '/booking/' . $_POST['selectedBookingTourChannel'] . '/' . $_POST['selectedBookingTour']);
-    }
-    if (isset($_POST['checkAvailability'])) {
-        header('Location: ' . $serverName . '/availability/' . $_POST['checkAvailability']);
     }
     try {
         $results = [];
@@ -61,19 +57,23 @@ if (isset($_COOKIE['SESSION'])) {
                 $template = 'tours';
                 break;
 
-            case 'tour':
-                $results = $tourCMSServiceAgent->getTourCMSData( 'tour', $serverURI[2], '', $serverURI[3]);
-                $template = 'tour';
-                break;
-
-            case 'booking':
-                $results = $tourCMSServiceAgent->getTourCMSData( 'booking', $serverURI[2], '', $serverURI[3]);
-                $template = 'booking';
+            case 'tour': case 'booking':
+                $results = $tourCMSServiceAgent->getTourCMSData( $serverURI[1], $serverURI[2], '', $serverURI[3]);
+                $template = $serverURI[1];
                 break;
             
             case 'availability':
-                $results = $tourCMSServiceAgent->getTourCMSData( 'availability', $serverURI[2], [$_POST], $serverURI[3]);
-                $template = 'booking';
+                $params = explode('?',$serverURI[3]);
+                $results = $tourCMSServiceAgent->getTourCMSData( 'availability', $serverURI[2], $params[1], $params[0]);
+                $template = 'availability';
+                break;
+            case 'bookingForm':
+                $template = 'bookingForm';
+                $results = ['data'=>$_POST];
+                break;
+            case 'bookingScreen':
+                $results = $tourCMSServiceAgent->getTourCMSData( 'bookingScreen', $_POST['channel_id'], $_POST, $_POST['tour_id']);
+                $template = 'bookingScreen';
                 break;
 
             case '/':
