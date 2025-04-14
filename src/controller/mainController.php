@@ -47,9 +47,9 @@ if (isset($_COOKIE['SESSION'])) {
         $results = [];
         $template = '';
         switch ($serverURI[1]) {
-            case 'channels':
-                $results = $tourCMSServiceAgent->getTourCMSData( 'channels');
-                $template = 'channels';
+            case 'channels': case 'bookings':
+                $results = $tourCMSServiceAgent->getTourCMSData( $serverURI[1]);
+                $template = $serverURI[1];
                 break;
 
             case 'tours':
@@ -75,7 +75,10 @@ if (isset($_COOKIE['SESSION'])) {
                 $results = $tourCMSServiceAgent->getTourCMSData( 'bookingScreen', $_POST['channel_id'], $_POST, $_POST['tour_id']);
                 $template = 'bookingScreen';
                 break;
-
+            case 'customerBooking': case 'bookingErase':
+                $results = $tourCMSServiceAgent->getTourCMSData( $serverURI[1], $serverURI[2], $serverURI[3]);
+                $template = $serverURI[1];
+                break;
             case '/':
                 header('Location: ' . $serverName . '/channels');
                 exit();

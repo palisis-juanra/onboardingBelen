@@ -1,8 +1,11 @@
 <?php
 namespace TourCMS\OnBoarding\Helper;
 
+use Number;
 use PhpParser\Error;
+use PhpParser\Node\Expr\Cast\Object_;
 use SimpleXMLElement;
+use stdClass;
 use TourCMS\Utils\TourCMS;
 use TourCMS\OnBoarding\Helper\redisWrapper;
 use TourCMS\OnBoarding\Config\env;
@@ -15,7 +18,7 @@ class tourCMSService extends TourCMS
     public $channel_id;
     protected $base_url;
 
-    public function __construct($type)
+    public function __construct(string $type)
     {
         $api_key = env::getEnvVariable("API_KEY");
         $type == 'o' ? $marketplace_id = env::getEnvVariable("MARKETPLACE_ID_OPERATOR") : $marketplace_id = env::getEnvVariable("MARKETPLACE_ID_AGENT");
@@ -26,7 +29,7 @@ class tourCMSService extends TourCMS
     }
 
     #IN PROGRESS
-    public function getTourCMSData($typeOfData, $channel = 0, $params = '', $tour = 0)
+    public function getTourCMSData(string $typeOfData, int $channel = 0, $params = '', int $tour = 0)
     {
         $results = [];
         if ($this->redis->existKey($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour)) {
@@ -46,7 +49,7 @@ class tourCMSService extends TourCMS
             $results = $this->callTourCMSFunction($typeOfData, $channel, $params, $tour);
             match ($typeOfData) {
                 'tours' => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results["tours"])),
-                'booking', 'availability', 'bookingForm', 'bookingScreen' => null,
+                'booking', 'availability', 'bookingForm', 'bookingScreen', 'bookings', 'bookingErase' => null,
                 default => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results)),
             };
         }
@@ -56,7 +59,7 @@ class tourCMSService extends TourCMS
         return $results;
     }
 
-    public function callTourCMSFunction($typeOfData, $channel = 0, $params = '', $tour = 0)
+    public function callTourCMSFunction($typeOfData, int $channel = 0, $params = '', int $tour = 0)
     {
         $results = [];
         match ($typeOfData) {
@@ -66,12 +69,15 @@ class tourCMSService extends TourCMS
             'tour' => $results = $this->show_tour($tour, $channel),
             'availability' => $results = $this->check_tour_availability($params, $tour, $channel),
             'bookingScreen' => $results = $this->generateNewBooking($channel, $params),
-            'bookings' => $results
+            'customerBooking' => $results = $this->show_booking($params, $channel),
+            'bookings' => $results = $this->getBookings($params, $channel),
+            'bookingErase' => $results = $this->bookingErase($params, $channel),
         };
+
         return $results;
     }
 
-    public function channelTours($channel = 0, $params = '')
+    public function channelTours(int $channel = 0, $params = '')
     {
         $tours = $this->list_tours($channel);
         $channels = null;
@@ -86,22 +92,7 @@ class tourCMSService extends TourCMS
         return $results;
     }
 
-    public function checkAvailability($channel, $params, $tour)
-    {
-        $components = $this->check_tour_availability($params, $tour, $channel);
-        $results = null;
-        if (count($components->available_components->component) > 0) {
-            $componentArray = [];
-            foreach ($components->available_components->component as $component) {
-                array_push($componentArray, $component);
-            }
-            $results = ['components' => $componentArray];
-        }
-        return $results;
-    }
-
-
-    public function generateNewBooking($channel, $params)
+    public function generateNewBooking(int $channel, $params)
     {
         $finalResults = [];
         // Start building the booking XML
@@ -124,7 +115,7 @@ class tourCMSService extends TourCMS
         $customer = $customers->addChild('customer');
         $customer->addChild('firstname', $params['firstname']);
         $customer->addChild('surname', $params['surname']);
-        if(isset($params['title'])){
+        if (isset($params['title'])) {
             $customer->addChild('title', 'Mr');
         }
         $customer->addChild('email', $params['email']);
@@ -132,7 +123,7 @@ class tourCMSService extends TourCMS
         // Query the TourCMS API, creating the booking
         $result = $this->start_new_booking($booking, 142);
 
-        if(isset($result) && $result->booking){
+        if (isset($result) && $result->booking) {
             // Temporary booking ID (obtained via "Start booking")
             $booking_id = $result->booking->booking_id;
 
@@ -145,11 +136,56 @@ class tourCMSService extends TourCMS
 
             // Query the TourCMS API, upgrading the booking from temporary to live
             $result = $this->commit_new_booking($booking, $channel);
-            if($result->error == "OK"){
-                $finalResults = ['booking'=>$result->booking];
+            if ($result->error == "OK") {
+                $finalResults = ['booking' => $result->booking];
             }
         }
         return $finalResults;
+    }
+
+    public function getBookings(string $params, int $channel)
+    {
+        $results = $this->list_bookings($params, $channel);
+        $availableBookings = new stdClass();
+        $cancelledBookings = new stdClass();
+        $cancelledBookings->bookings = [];
+        $availableBookings->bookings = [];
+        foreach ($results->bookings->booking as $booking) {
+            $clonedBooking = new stdClass();
+            $clonedBooking->cancel_reason = $booking->cancel_reason;
+            $clonedBooking->booking_id = $booking->booking_id;
+            $clonedBooking->channel_id = $booking->channel_id;
+            $clonedBooking->cancel_text = $booking->cancel_text;
+            isset($booking->lead_customer_name) ? $clonedBooking->lead_customer_name = $booking->lead_customer_name : '';
+            isset($booking->booking_name) ? $clonedBooking->booking_name = $booking->booking_name : '';
+            if ($booking->cancel_reason > 0) {
+                array_push($cancelledBookings->bookings, $clonedBooking);
+            } else {
+                array_push($availableBookings->bookings, $clonedBooking);
+            }
+        }
+        return ['availableBookings' => $availableBookings, 'cancelledBookings' => $cancelledBookings];
+    }
+
+    public function bookingErase(int $bookingID, int $channel)
+    {
+        // Create a new SimpleXMLElement to hold the booking details
+        $booking = new SimpleXMLElement('<booking />');
+
+        // Must set the Booking ID on the XML, so TourCMS knows which to cancel
+        $booking->addChild('booking_id', $bookingID);
+        $booking->addChild('note', 'Booking eliminated by user');
+
+        // Call TourCMS API, cancelling the booking
+        $cancellationResult = $this->cancel_booking($booking, $channel);
+        $results = '';
+        if ($cancellationResult->error == 'OK') {
+            $results = 'Booking ' . $bookingID . ' has been succesfully erased.';
+        } else {
+            $results = 'Error during cancellation or booking already cancelled.';
+        }
+        return ['erasingResult' => $results];
+
     }
 }
 
