@@ -1,0 +1,41 @@
+{{>header}}
+    {{#booking}}
+        <div class="align-self-center w-80 h-auto p-5 mt-3 mb-2 rounded-3 shadow-lg" style="background: linear-gradient(155deg,rgba(0, 86, 147, 1) 25%, rgba(143, 181, 208, 1) 100%);">
+            <div class="container  rounded" style="border: 0.5em inset #005693;">
+                <div class="row p-4 bg-light">
+                    <div class="col-md-6 mb-4" >
+                        <h1 class="mb-5">{{booking_name}} - ID: {{booking_id}}</h1>
+                        {{#status_text}}
+                            <h3 class="mt-5">➼ Booking status:</h3>
+                            <h4 class="mb-4" style="text-indent: 1.3em">{{status_text}}</h4>
+                        {{/status_text}}
+                        {{#cancel_text}}
+                            <h3 class="mt-3">➼ Cancellation status: </h3>
+                            <h4 class="mb-4" style="text-indent: 1.3em">{{cancel_text}}</h4>
+                        {{/cancel_text}}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="overflow-scroll">
+                        <h3>➼ Departure info:</h3>
+                            <h5 class="mb-4 text-center">
+                                <button class="btn btn-success rounded-circle p-1"></button> Starts the {{start_date}} <button class="btn btn-danger rounded-circle p-1" style="margin-left:5em;"></button>Ends the {{end_date}} 
+                            </h5>
+                            <h4>• Payment status:</h4>
+                            <h5 style="text-indent: 0.7em"> {{payment_status_text}}</h5>
+                            <h4>• Remaining amount: </h4>
+                            <h5 style="text-indent: 0.7em">{{{balance_display}}}</h5>
+                            {{#lead_customer_name}}
+                                <h3 class="mb-2 mt-3">➼ Customer info:</h3>
+                                <h4>• Name:</h4>
+                                <h5 style="text-indent: 0.7em">{{lead_customer_name}} </h5>
+                                {{#lead_customer_email}}
+                                    <h4>• Email:</h4>
+                                    <h5 style="text-indent: 0.7em">{{lead_customer_email}}</h5>
+                                {{/lead_customer_email}}
+                            {{/lead_customer_name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/booking}}
+{{>footer}}

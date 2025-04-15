@@ -1,0 +1,48 @@
+    {{>header}}
+            <div class="align-self-center w-100 h-auto p-5 mt-5">
+            <form {{#tours.tour}}action="http://www.onboardingbelen.local/tours/{{channel_id}} "{{/tours.tour}} name="channelsForm" method="post">
+            <select onChange="channelsForm.submit()" name="selectedChannel" class="form-select" aria-label="Default select example">
+            <option selected>Select a channel</option>
+               {{#channels.channel}}
+                   
+                    <option value='{{channel_id}}'>{{channel_name}}</option>
+                  
+                {{/channels.channel}}
+            </select>
+            </form>
+            <div class="justify-content-center d-flex flex-wrap flex-row w-100 mt-5 mb-5">
+            {{#tours.tour}}
+            <form action="http://www.onboardingbelen.local/tour/" name='tourForm{{tour_id}}' method="post" style="margin-left: 1.5%; margin-right:1.5%;">
+                    <div class="align-self-center mt-5 card shadow" style="width: 20rem; height: 12rem;border-bottom: 3px;border-bottom-style: dashed; border-color: LightBlue">
+                            <input type="hidden" value="{{tour_id}}" name="selectedTour" />
+                            <input type="hidden" value="{{channel_id}}" name="selectedTourChannel" />
+                        <div class="card-body">
+                            <div class="justify-content-start d-flex flex-wrap flex-row mt-1" style="min-width:100%;min-height: 45%;overflow:scroll;">
+                                <h5 class="card-title">{{tour_name}}</h5>
+                            </div>
+                            <div class="justify-content-start d-flex flex-wrap flex-row mt-2" style="padding: 1%;min-height: 25%; ">
+                                <h5>
+                                    {{#has_sale}}
+                                        <button class="btn btn-success rounded-circle p-1"></button> Available 
+                                        <div class="align-items-bottom d-flex flex-wrap flex-row mt-2" style="min-height: 2em; align-items: end">
+                                            <a onClick="tourForm{{tour_id}}.submit()" class="btn btn-primary p-1">Show tour</a>
+                                        </div>
+                                    {{/has_sale}}
+                                    {{^has_sale}}
+                                        <button class="btn btn-danger rounded-circle p-1"></button> Not available 
+                                    {{/has_sale}}
+                                </h5>
+                             </div>
+                        </div>
+                    </div>
+             </form>
+            {{/tours.tour}}
+            {{^tours.tour}}
+                <div class='justify-content-center d-flex flex-wrap flex-column w-100 '>
+                    <h1 class='text-muted align-self-center'>No tours available to show right now for the selected channel</h1>
+                    <img class='align-self-center w-fit' src='../../public/images/notours.png' alt="Card image cap">
+                </div>
+            {{/tours.tour}}
+            </div>
+            </div>
+    {{>footer}}
