@@ -31,23 +31,27 @@ if (isset($_COOKIE['SESSION'])) {
             header('Location: ' . $serverName);
         }
     } catch (\Throwable $th) {
+        
         header('Location: ' . $serverName . '/error');
         exit();
     }
     if (isset($_POST['selectedChannel'])) {
-        header('Location: ' . $serverName . '/tours/' . $_POST['selectedChannel']);
+        header('Location: ' . $serverName . '/tours/'. $_POST['selectedChannel']);
+        exit();
     }
     if (isset($_POST['selectedTour'])) {
         header('Location: ' . $serverName . '/tour/' . $_POST['selectedTourChannel'] . '/' . $_POST['selectedTour']);
+        exit();
     }
     if (isset($_POST['selectedBookingTour'])) {
         header('Location: ' . $serverName . '/booking/' . $_POST['selectedBookingTourChannel'] . '/' . $_POST['selectedBookingTour']);
+        exit();
     }
     try {
         $results = [];
         $template = '';
         switch ($serverURI[1]) {
-            case 'channels': case 'bookings':
+            case 'channels': case 'bookings': case 'customers':
                 $results = $tourCMSServiceAgent->getTourCMSData( $serverURI[1]);
                 $template = $serverURI[1];
                 break;
@@ -115,6 +119,3 @@ if (isset($_COOKIE['SESSION'])) {
     }
 
 }
-
-
-

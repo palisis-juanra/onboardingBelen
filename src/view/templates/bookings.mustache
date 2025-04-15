@@ -1,14 +1,14 @@
 {{>header}}
-    <div class="align-self-center container w-100 mt-5 mb-5" style="height:6em;">
+    <div class="align-self-center container w-100 mt-5 mb-5" style="height:6em;margin-bottom:20em">
     <h1 class="mb-5 text-center">Available Bookings</h1>
     {{#availableBookings.bookings}}
             {{#booking_id}}
-                <div class="row rounded p-3 mb-5 shadow-lg" style="border:1px;width:full;height:9em;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
+                <div class="row rounded p-3 mb-5 shadow-lg" style="border:1px;width:full;height:auto;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
                     <div class="col-md-6" >
                         <h3 class="mb-2 text-light">
                         {{#booking_name}}{{booking_name}} {{/booking_name}}
                         {{^booking_name}}No name for this booking {{/booking_name}}
-                        - ID: {{booking_id}}
+                        - <a class="link-light" href="http://www.onboardingbelen.local/customerBooking/{{channel_id}}/{{booking_id}}">ID: {{booking_id}}</a>
                         </h3>
                         {{#lead_customer_name}}
                         <h4 class="text-light">Customer: {{lead_customer_name}}</h4>
@@ -32,12 +32,12 @@
     <h1 class="mb-5 text-center">Cancelled Bookings</h1>
     {{#cancelledBookings.bookings}}
         {{#booking_id}}
-            <div class="row rounded p-3 mb-5 shadow-lg" style="border:1px;width:full;height:9em;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
+            <div class="row rounded p-3 mb-5 shadow-lg" style="border:1px;width:full;height:auto;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
                 <div class="col-md-6" >
                     <h3 class="mb-2 text-light">
                     {{#booking_name}}{{booking_name}} {{/booking_name}}
                     {{^booking_name}}No name for this booking {{/booking_name}}
-                    - ID: {{booking_id}}
+                    - <a class="link-light" href="http://www.onboardingbelen.local/customerBooking/{{channel_id}}/{{booking_id}}">ID: {{booking_id}}</a>
                     </h3>
                     {{#lead_customer_name}}
                     <h4 class="text-light">Customer: {{lead_customer_name}}</h4>

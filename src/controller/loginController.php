@@ -31,7 +31,6 @@ class loginController
             setcookie("SESSION", $_SESSION['user'], $this->cookieExpiration, "/");
         } elseif (isset($_COOKIE['SESSION'])) {
             if ($this->redis->existKey($_COOKIE['SESSION']) == 0) {
-                session_destroy();
                 unset($_COOKIE['SESSION']);
                 setcookie("SESSION", "", $this->unsetCookieExpiration);
                 if (isset($_COOKIE["PHPSESSID"])) {

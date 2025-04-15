@@ -49,7 +49,7 @@ class tourCMSService extends TourCMS
             $results = $this->callTourCMSFunction($typeOfData, $channel, $params, $tour);
             match ($typeOfData) {
                 'tours' => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results["tours"])),
-                'booking', 'availability', 'bookingForm', 'bookingScreen', 'bookings', 'bookingErase' => null,
+                'booking', 'availability', 'bookingForm', 'bookingScreen', 'bookings', 'bookingErase','customerBooking' => null,
                 default => $this->redis->redisDataInsertion('json', array($_COOKIE['PHPSESSID'] . $typeOfData . $channel . $tour => $results)),
             };
         }
@@ -72,6 +72,7 @@ class tourCMSService extends TourCMS
             'customerBooking' => $results = $this->show_booking($params, $channel),
             'bookings' => $results = $this->getBookings($params, $channel),
             'bookingErase' => $results = $this->bookingErase($params, $channel),
+            'customers'=>null
         };
 
         return $results;
@@ -116,7 +117,7 @@ class tourCMSService extends TourCMS
         $customer->addChild('firstname', $params['firstname']);
         $customer->addChild('surname', $params['surname']);
         if (isset($params['title'])) {
-            $customer->addChild('title', 'Mr');
+            $customer->addChild('title', $params['title']);
         }
         $customer->addChild('email', $params['email']);
 
