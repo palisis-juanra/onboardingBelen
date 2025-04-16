@@ -3,16 +3,17 @@ namespace TourCMS\OnBoarding\Config;
 use Dotenv\Dotenv;
 class env
 {
-    static function setEnviroment()
+    // This function sets the environment variables
+    static function setEnvironment()
     {
         $dotenv = Dotenv::createImmutable(__DIR__);
         $dotenv->load();
     }
 
-# Marketplace
+    // This function sets the environment variables
     static function getEnvVariable($varName)
     {
-        env::setEnviroment();
+        env::setEnvironment();
         $envVariable = $_ENV[$varName];
         return $envVariable;
     }

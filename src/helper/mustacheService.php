@@ -17,12 +17,13 @@ class mustacheService
     }
     public function mustacheRenderer()
     {
+        // Creates the mustache renderer and configures it
         Mustache_Autoloader::register();
+        $templatesExtension = ['extension' => '.html'];
         $mustache = new Mustache_Engine(array(
-            'loader' => new Mustache_Loader_FilesystemLoader(env::getEnvVariable("BASE_PATH").'src/view/templates'),
-            'partials_loader' => new Mustache_Loader_FilesystemLoader(env::getEnvVariable("BASE_PATH").'src/view/templates/partials'),
+            'loader' => new Mustache_Loader_FilesystemLoader(env::getEnvVariable("BASE_PATH") . 'src/view/templates', $templatesExtension),
+            'partials_loader' => new Mustache_Loader_FilesystemLoader(env::getEnvVariable("BASE_PATH") . 'src/view/templates/partials', $templatesExtension),
         ));
-
         if ($this->type == 'template') {
             $tpl = $mustache->loadTemplate($this->template);
         } else {

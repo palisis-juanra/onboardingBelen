@@ -3,7 +3,9 @@ putenv("VENDOR=/var/www/html/onboardingBelen/vendor/autoload.php");
 require(getenv('VENDOR'));
 
 use TourCMS\OnBoarding\Config\env;
-$routes = ['/', 'login', 'error', 'channels', 'tours', 'tour','booking','availability','bookingForm','bookingScreen','customerBooking','bookings','bookingErase','customers'];
+$routes = ['/', 'login', 'error', 'channels', 'tours', 'tour','booking','availability',
+'bookingForm','bookingScreen','customerBooking','bookings','bookingErase','customers',
+'customerUpdate','customerUpdateResult'];
 $serverURI = ['', ''];
 $serverName = env::getEnvVariable('SERVER_BASE_NAME_PATH');
 
@@ -16,8 +18,3 @@ if (in_array($serverURI[1], $routes, true) == false) {
 } else {
     include_once('src/controller/mainController.php');
 }
-
-    
-
-
-

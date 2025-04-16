@@ -1,0 +1,66 @@
+    {{>header}}
+            <div class="container d-flex flex-column justify-content-center align-self-center w-50 p-5 mt-4  bg-light rounded-3 shadow-lg mb-5" style="overflow:scroll; height: 65%;">
+                <h2 class="mb-3 text-center mt-5">Personal data</h2>
+                <div class="mt-2 h-100 container">
+                {{#data}}
+                <form action="http://www.onboardingbelen.local/customerUpdateResult/" name='customerUpdateForm' method="POST">
+                    <input type="hidden" name="channel_id" value="{{channel_id}}">
+                    <input type="hidden" name="customer_id" value="{{customer_id}}">
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Name :
+                    </h5>
+                    <input placeholder="{{firstname}}" class="form-control text-center" type="text" name="firstname" ><br>
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Surname :
+                    </h5>
+                    <input placeholder="{{surname}}" class="form-control text-center" type="text" name="surname" ><br>
+
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Email :
+                    </h5>
+                    <input placeholder="{{email}}" class="form-control text-center" type="email" name="email" ><br>
+
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Birthday: 
+                    </h5>
+                    <input placeholder="{{dob}}" class="form-control text-center" type="date" name="dob" ><br>
+
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Passport number: 
+                    </h5>
+                    <input placeholder="{{pass_num}}" class="form-control text-center" type="number" name="pass_num" ><br>
+
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Country text: 
+                    </h5>
+                    <input placeholder="{{country_text}}" class="form-control text-center" type="text" name="country_text" ><br>
+
+                    <h5 class="form-check-label mt-1" style="text-indent: 10px">
+                        Tittle :
+                    </h5>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="title" value='Mrs'>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Mrs
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="title" value='Ms'>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Ms
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="title" value='None'>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        None
+                    </label>
+                    </div>
+                    <button type="submit" onSubmit="customerUpdateForm.submit()" class="mt-3 mb-3 w-25 align-self-center p-3 btn btn-primary">
+                        Update
+                    </button>
+                </div>
+                </form>
+                {{/data}}
+            </div>
+    {{>footer}}
