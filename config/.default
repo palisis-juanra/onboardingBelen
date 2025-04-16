@@ -1,0 +1,17 @@
+# Base path
+BASE_PATH="your_base_path"
+
+# Marketplace credentials 
+API_KEY="your_api_key"
+MARKETPLACE_ID_AGENT=your_marketplace_agent_id
+MARKETPLACE_ID_OPERATOR=your_marketplace_operator_id
+
+CHANNEL_ID="your_channel_id"
+
+# Redis credentials
+REDIS_HOST="your_redis_host"
+REDIS_PASSWORD="your_redis_password"
+REDIS_PORT="your_redis_port"
+
+#Base server name
+SERVER_BASE_NAME_PATH="http://www.onboardingbelen.local"

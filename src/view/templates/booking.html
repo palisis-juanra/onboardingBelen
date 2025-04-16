@@ -1,0 +1,24 @@
+    {{>header}}
+        {{#tour}}
+            <div class="container d-flex flex-column justify-content-center align-self-center w-50 h-auto p-5 mt-4  bg-light rounded-3 shadow-lg">
+                <h2 class="mb-3 text-center">{{tour_name}} Availability</h2>
+                <div class="mt-5">
+                <form action="http://www.onboardingbelen.local/availability/{{channel_id}}/{{tour_id}}" name='availabilityForm' method="get">
+                    {{#new_booking.people_selection.rate}}
+                        <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
+                            {{label_1}} (from {{{from_price_display}}}) :
+                        </h5>
+                        <input placeholder="Select your tickets (max {{maximum}})" class="form-control text-center" type="number" name="{{rate_id}}" min="{{minimum}}" max="{{maximum}}" required><br>
+                    {{/new_booking.people_selection.rate}}
+                    <h6 class="form-check-label text-muted" for="{{agecat}}">
+                        • Note: Bookings from {{new_booking.date_selection.duration_minimum}} to {{new_booking.date_selection.duration_maximum}} days.
+                    </h6>
+                    <input class="align-self-center form-control text-center" type="date" name="date" min="{{next_bookable_date}}" max="{{last_bookable_date}}">
+                </div>
+                <button type="submit" onSubmit="availabilityForm.submit()" class="w-25 align-self-center p-3 btn btn-primary">
+                    <i class="bi bi-heart"></i> Check availability
+                </button>
+                </form>
+            </div>
+        {{/tour}}
+    {{>footer}}

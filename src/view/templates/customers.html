@@ -1,0 +1,63 @@
+{{>header}}
+    <div class="align-self-center justify-content-center container w-100 mt-5 mb-5" style="height:6em;margin-bottom:20em">
+    <form class="d-flex  row flex-wrap flex-column justify-content-center" action="http://www.onboardingbelen.local/customers" method="POST">
+        <div class="d-flex flex-column mb-3 justify-content-center align-self-center shadow p-3 rounded-4 bg-white" style="width: 50%">
+            <div class="d-flex flex-column p-2 justify-content-center text-center form-outline mb-4">
+                <label class="form-label" for="customerID"><b>Customer Searcher</b></label>
+                <input class="form-control w-75 align-self-center  text-center" type="number" placeholder="Enter Customer ID" name="customerID" required>
+                <select name="customerChannel" class="form-select w-75 mt-3 align-self-center" aria-label="Default select example">
+                    <option value='0' selected>Select a customer channel</option>
+                    {{#channels.channel}}
+                        <option value='{{channel_id}}'>{{channel_name}}</option>
+                    {{/channels.channel}}
+                </select>
+            </div>
+            <button class="w-25 align-self-center p-3 btn btn-light"  type="submit" >Search</button>
+        </div>
+    </form> 
+    {{#customers.customer}}
+    <form action="http://www.onboardingbelen.local/customerUpdate/{{channel_id}}/{{customer_id}}" name="customerUpdateRequest" method="post">
+        <div class="row rounded p-3 mb-5 shadow-lg text-center" style="border:1px;width:full;height:auto;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
+            <div class="col" >
+                {{#customer_name}} 
+                <h3 class="align-self-center mb-2 text-light text-center">
+                    {{customer_name}} - Customer ID: {{customer_id}}</a>
+                </h3>
+                <input type="hidden" name="channel_id" value="{{channel_id}}">
+                <input type="hidden" name="customer_id" value="{{customer_id}}">
+                <input type="hidden" name="firstname" value="{{firstname}}">
+                <input type="hidden" name="surname" value="{{surname}}">
+                {{/customer_name}}
+                {{#email}}
+                <h4 class="text-light">Email: {{email}}</h4>
+                <input type="hidden" name="email" value="{{email}}">
+                {{/email}}
+            </div>
+            <div class="col" >
+                {{#dob}}
+                    <h4 class="mb-2 text-light">Birthday: {{dob}}</h4>
+                    <input type="hidden" name="dob" value="{{dob}}">
+                {{/dob}}
+                {{#agecat_text}}
+                    <h4 class="mb-2 text-light">Age category: {{agecat_text}}</h4>
+                    <input type="hidden" name="agecat_text" value="{{agecat_text}}">
+                {{/agecat_text}}
+                {{#pass_num}}
+                    <h4 class="mb-2 text-light">Passport: {{pass_num}}</h4>
+                    <input type="hidden" name="pass_num" value="{{pass_num}}">
+                {{/pass_num}}
+                {{#country_text}}
+                    <h4 class="mb-2 text-light">Country: {{country_text}}</h4>
+                    <input type="hidden" name="country_text" value="{{country_text}}">
+                {{/country_text}}
+            </div>
+            <div class="col align-self-center" >
+                <button type=submit onSubmit="customerUpdateRequest.submit()" class="w-50 align-self-center p-3 btn btn-warning">Modify customer</button>
+            </div>
+        </div>    
+    </form>
+    {{/customers.customer}}
+        
+
+    </div>
+{{>footer}}

@@ -1,0 +1,15 @@
+    {{>header}}
+        {{#booking}}
+            <div class="container d-flex flex-column justify-content-center align-self-center w-50 h-auto p-5 mt-4 text-center bg-light rounded-3 shadow-lg">
+                <h1 class="mb-5">Thank you for booking with us!</h1>
+                <h3>Your booking is 
+                    <a href="http://www.onboardingbelen.local/customerBooking/{{channel_id}}/{{booking_id}}">{{booking_id}}</a> 
+                    - Get your voucher
+                    <a href="{{voucher_url}}">here</a> 
+                </h3>
+            </div>
+        {{/booking}}
+        {{^booking}}
+            <h1>Sorry but it seems we are unable to make your booking . Please try again later.</h1>
+        {{/booking}}
+    {{>footer}}

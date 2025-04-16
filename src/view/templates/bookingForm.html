@@ -1,0 +1,52 @@
+    {{>header}}
+            <div class="container d-flex flex-column justify-content-center align-self-center w-50 p-5 mt-4  bg-light rounded-3 shadow-lg mb-5" style="overflow:scroll; height: 65%;">
+                <h2 class="mb-3 text-center mt-5">Personal data</h2>
+                <div class="mt-2">
+                <form action="http://www.onboardingbelen.local/bookingScreen/" name='availabilityForm' method="POST">
+                    {{#data}}
+                        <input type="hidden" name="component_key" value="{{component_key}}">
+                        <input type="hidden" name="channel_id" value="{{channel_id}}">
+                        <input type="hidden" name="tour_id" value="{{tour_id}}">
+                        <input type="hidden" name="total_customers" value="1">
+                    {{/data}}
+                    <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
+                        Name :
+                    </h5>
+                    <input placeholder="Enter your name" class="form-control text-center" type="text" name="firstname" required><br>
+                    <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
+                        Surname :
+                    </h5>
+                    <input placeholder="Enter your surname" class="form-control text-center" type="text" name="surname" required><br>
+                    <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
+                        Email :
+                    </h5>
+                    <input placeholder="Enter your email" class="form-control text-center" type="email" name="email" required><br>
+                    <h5 class="form-check-label mt-1" for="{{agecat}}" style="text-indent: 10px">
+                        Tittle :
+                    </h5>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="title" value='Mrs'>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Mrs
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="title" value='Ms'>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Ms
+                    </label>
+                    </div>
+                    <div class="form-check">
+                    <input class="form-check-input" type="radio" name="title" value='None'>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        None
+                    </label>
+                    </div>
+
+                </div>
+                <button type="submit" onSubmit="availabilityForm.submit()" class="w-25 align-self-center p-3 btn btn-primary">
+                    <i class="bi bi-heart"></i> Check availability
+                </button>
+                </form>
+            </div>
+    {{>footer}}

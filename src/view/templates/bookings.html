@@ -1,0 +1,55 @@
+{{>header}}
+    <div class="align-self-center container w-100 mt-5 mb-5" style="height:6em;margin-bottom:20em">
+    <h1 class="mb-5 text-center">Available Bookings</h1>
+    {{#availableBookings.bookings}}
+            {{#booking_id}}
+                <div class="row rounded p-3 mb-5 shadow-lg" style="border:1px;width:full;height:auto;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
+                    <div class="col-md-6" >
+                        <h3 class="mb-2 text-light">
+                        {{#booking_name}}{{booking_name}} {{/booking_name}}
+                        {{^booking_name}}No name for this booking {{/booking_name}}
+                        - <a class="link-light" href="http://www.onboardingbelen.local/customerBooking/{{channel_id}}/{{booking_id}}">ID: {{booking_id}}</a>
+                        </h3>
+                        {{#lead_customer_name}}
+                        <h4 class="text-light">Customer: {{lead_customer_name}}</h4>
+                        {{/lead_customer_name}}
+                        <h4 class="text-light">{{cancel_text}} </h4>
+                        {{^cancel_reason}}
+                            <h4>{{cancel_reason}}</h4>
+                        {{/cancel_reason}}
+                    </div>
+                    {{#cancel_reason}}
+                        <div class="col-md-6 d-flex justify-content-end align-items-center" >
+                            <a href="http://www.onboardingbelen.local/bookingErase/{{channel_id}}/{{booking_id}}" class="w-50 align-self-center p-3 btn btn-danger"  type="submit" >Cancel booking</a>
+                        </div>
+                    {{/cancel_reason}}
+                </div>
+            {{/booking_id}}
+    {{/availableBookings.bookings}}
+    {{^availableBookings.bookings}}
+        <h1>No available bookings found</h1>
+    {{/availableBookings.bookings}}
+    <h1 class="mb-5 text-center">Cancelled Bookings</h1>
+    {{#cancelledBookings.bookings}}
+        {{#booking_id}}
+            <div class="row rounded p-3 mb-5 shadow-lg" style="border:1px;width:full;height:auto;background: linear-gradient(90deg,rgba(0, 86, 147, 1) 32%, rgba(86, 142, 175, 1) 62%, rgba(170, 197, 203, 1) 93%, rgba(185, 207, 208, 1) 100%, rgba(249, 250, 251, 1) 100%);">
+                <div class="col-md-6" >
+                    <h3 class="mb-2 text-light">
+                    {{#booking_name}}{{booking_name}} {{/booking_name}}
+                    {{^booking_name}}No name for this booking {{/booking_name}}
+                    - <a class="link-light" href="http://www.onboardingbelen.local/customerBooking/{{channel_id}}/{{booking_id}}">ID: {{booking_id}}</a>
+                    </h3>
+                    {{#lead_customer_name}}
+                    <h4 class="text-light">Customer: {{lead_customer_name}}</h4>
+                    {{/lead_customer_name}}
+                    <h4 class="text-light">{{cancel_text}} </h4>
+                </div>
+            </div>
+        {{/booking_id}}
+    {{/cancelledBookings.bookings}}
+    {{^cancelledBookings.bookings}}
+        <h1>No cancelled bookings found</h1>
+    {{/cancelledBookings.bookings}}
+
+    </div>
+{{>footer}}
