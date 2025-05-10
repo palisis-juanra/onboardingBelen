@@ -1,0 +1,4 @@
+config/.env
+vendor
+onboardingBelen.conf
+public/images

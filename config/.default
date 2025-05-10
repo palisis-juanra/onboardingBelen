@@ -1,0 +1,12 @@
+# Marketplace credentials
+API_KEY="your_api_key"
+MARKETPLACE_ID="marketplace_id"
+CHANNEL_ID="channel_id"
+
+# Redis credentials
+REDIS_HOST="redis_host"
+REDIS_PASSWORD="redis_password"
+REDIS_PORT=redis_port
+
+#Base server name
+SERVER_NAME="http://your.server.name"
